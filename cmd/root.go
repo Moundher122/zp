@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"os"
-	"zp/internals/process"
+	"zp/internals/loadebpf"
 
 	"github.com/spf13/cobra"
 )
@@ -23,9 +23,7 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		p := process.NewIdentifyProcess(8080)
-		result := p.Identify()
-		println(result)
+		loadebpf.LoadEBPFProgram()
 	},
 }
 
@@ -39,13 +37,5 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.zp.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
