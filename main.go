@@ -28,8 +28,6 @@ func check(ch chan interface{}) {
 	for {
 		result := proc.Identify()
 		if result != nil {
-			ch <- result
-			break
 		}
 	}
 }

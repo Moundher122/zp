@@ -2,7 +2,6 @@ package process
 
 import (
 	"log"
-	converter "zp/pkg/Converter"
 
 	"github.com/cilium/ebpf"
 	"github.com/cilium/ebpf/ringbuf"
@@ -22,7 +21,6 @@ func NewIdentifyProcess(port int, spec *ebpf.Collection) *IdentifyProcess {
 
 func (ip *IdentifyProcess) Identify() *ebpf.Map {
 	the := ip.spec.Maps["events"]
-	log.Println("Identifying process for port:", converter.PortConverter(6379))
 	log.Println(the)
 	rd, err := ringbuf.NewReader(the)
 	if err != nil {
@@ -33,6 +31,5 @@ func (ip *IdentifyProcess) Identify() *ebpf.Map {
 		log.Println("Error reading from ring buffer:", err)
 	}
 	log.Println(record.RawSample)
-	log.Println(the)
 	return the
 }
