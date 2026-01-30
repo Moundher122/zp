@@ -1,25 +1,38 @@
 package process
 
 import (
-	"fmt"
-	"os"
+	"log"
+	converter "zp/pkg/Converter"
+
+	"github.com/cilium/ebpf"
+	"github.com/cilium/ebpf/ringbuf"
 )
 
 type IdentifyProcess struct {
 	Port int
+	spec *ebpf.Collection
 }
 
-func NewIdentifyProcess(port int) *IdentifyProcess {
+func NewIdentifyProcess(port int, spec *ebpf.Collection) *IdentifyProcess {
 	return &IdentifyProcess{
 		Port: port,
+		spec: spec,
 	}
 }
 
-func (p *IdentifyProcess) Identify() string {
-	data, err := os.ReadFile("/proc/net/tcp")
+func (ip *IdentifyProcess) Identify() *ebpf.Map {
+	the := ip.spec.Maps["events"]
+	log.Println("Identifying process for port:", converter.PortConverter(6379))
+	log.Println(the)
+	rd, err := ringbuf.NewReader(the)
 	if err != nil {
-		panic(err)
+		log.Println("Error creating ring buffer reader:", err)
 	}
-	fmt.Println(string(data))
-	return "Process identified"
+	record, err := rd.Read()
+	if err != nil {
+		log.Println("Error reading from ring buffer:", err)
+	}
+	log.Println(record.RawSample)
+	log.Println(the)
+	return the
 }
