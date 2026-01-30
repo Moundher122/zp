@@ -1,12 +1,13 @@
 // port.bpf.c
 #define __TARGET_ARCH_x86
-
 #include "vmlinux.h"
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_core_read.h>
 #include <bpf/bpf_tracing.h>
 #include <bpf/bpf_endian.h>
+
 #define AF_INET 2
+
 struct event {
     __u32 pid;
     __u16 sport;
@@ -61,4 +62,5 @@ int handle_bind(struct trace_event_raw_sys_enter *ctx)
     bpf_printk("Event submitted!");
     return 0;
 }
+
 char LICENSE[] SEC("license") = "GPL";

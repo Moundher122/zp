@@ -34,11 +34,10 @@ func LoadEBPFProgram() (*ebpf.Collection, error) {
 		log.Fatal("handle_tcp_connect not found")
 	}
 
-	kp, err := link.Tracepoint("syscalls", "sys_enter_bind", prog, nil)
+	_, err = link.Tracepoint("syscalls", "sys_enter_bind", prog, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer kp.Close()
 
 	log.Println("kprobe attached")
 
