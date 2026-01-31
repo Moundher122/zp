@@ -1,47 +1,19 @@
 package loadebpf
 
 import (
-	"log"
+	"os"
 
 	"github.com/cilium/ebpf"
-	"github.com/cilium/ebpf/link"
+)
+
+var (
+	pinnedLinkPath = "/sys/fs/bpf/port_link"
 )
 
 func LoadEBPFProgram() (*ebpf.Collection, error) {
-	spec, err := ebpf.LoadCollectionSpec("internals/eBPF/port.bpf.o")
-	if err != nil {
-		return nil, err
+	if _, err := os.Stat(pinnedLinkPath); os.IsNotExist(err) {
+		coll, err := AtachToKernel(pinnedLinkPath)
+		return coll, err
 	}
-
-	log.Println("=== programs ===")
-	for name := range spec.Programs {
-		log.Println(name)
-	}
-
-	log.Println("=== maps ===")
-	for name := range spec.Maps {
-		log.Println(name)
-	}
-
-	coll, err := ebpf.NewCollection(spec)
-	if err != nil {
-		return nil, err
-	}
-	log.Println(coll.Maps)
-	prog := coll.Programs["handle_bind"]
-
-	if prog == nil {
-		log.Fatal("handle_tcp_connect not found")
-	}
-
-	_, err = link.Tracepoint("syscalls", "sys_enter_bind", prog, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("kprobe attached")
-
-	log.Println("eBPF program attached successfully")
-
-	return coll, nil
+	return nil, nil
 }
