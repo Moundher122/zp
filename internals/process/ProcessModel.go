@@ -1,15 +1,13 @@
 package process
 
 type Process struct {
-	Pid   int
-	sport int
-	dport int
+	Pid  uint32
+	Port uint16
 }
 
-func NewProcess(pid, sport, dport int) *Process {
+func NewProcess(pid uint32, port uint16) *Process {
 	return &Process{
-		Pid:   pid,
-		sport: sport,
-		dport: dport,
+		Pid:  pid,
+		Port: port,
 	}
 }

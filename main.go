@@ -18,7 +18,7 @@ func main() {
 	m := <-ch
 	log.Println("Identified eBPF Map Spec:", m)
 }
-func check(ch chan interface{}) {
+func check(ch chan any) {
 	spec, err := loadebpf.LoadEBPFProgram()
 	if err != nil {
 		println("Error loading eBPF program:", err.Error())
