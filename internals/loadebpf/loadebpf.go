@@ -1,6 +1,7 @@
 package loadebpf
 
 import (
+	"log"
 	"os"
 
 	"github.com/cilium/ebpf"
@@ -15,5 +16,9 @@ func LoadEBPFProgram() (*ebpf.Collection, error) {
 		coll, err := AtachToKernel(pinnedLinkPath)
 		return coll, err
 	}
-	return nil, nil
+	coll, err := ebpf.LoadCollection(pinnedLinkPath)
+	if err != nil {
+		log.Fatal("Failed to load pinned eBPF program:", err)
+	}
+	return coll, nil
 }
