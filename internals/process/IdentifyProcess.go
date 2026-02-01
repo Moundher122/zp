@@ -11,10 +11,10 @@ import (
 
 type IdentifyProcess struct {
 	Port int
-	spec *ebpf.Collection
+	spec *ebpf.Map
 }
 
-func NewIdentifyProcess(port int, spec *ebpf.Collection) *IdentifyProcess {
+func NewIdentifyProcess(port int, spec *ebpf.Map) *IdentifyProcess {
 	return &IdentifyProcess{
 		Port: port,
 		spec: spec,
@@ -22,9 +22,7 @@ func NewIdentifyProcess(port int, spec *ebpf.Collection) *IdentifyProcess {
 }
 
 func (ip *IdentifyProcess) Identify() []byte {
-	the := ip.spec.Maps["events"]
-	log.Println(the)
-	rd, err := ringbuf.NewReader(the)
+	rd, err := ringbuf.NewReader(ip.spec)
 	if err != nil {
 		log.Println("Error creating ring buffer reader:", err)
 	}
