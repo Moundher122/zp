@@ -30,12 +30,10 @@ func (ip *IdentifyProcess) Identify() []byte {
 	if err != nil {
 		log.Println("Error reading from ring buffer:", err)
 	}
-	var e Process
-	err = binary.Read(
-		bytes.NewReader(record.RawSample),
-		binary.LittleEndian,
-		&e,
-	)
-	log.Printf("PID=%d PORT=%d\n", e.Pid, e.Port)
+	var event Process
+	err = binary.Read(bytes.NewBuffer(record.RawSample), binary.LittleEndian, &event)
+	if err != nil {
+		log.Println("Error parsing event data:", err)
+	}
 	return record.RawSample
 }
