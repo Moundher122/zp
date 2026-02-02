@@ -6,6 +6,9 @@ package cmd
 import (
 	"os"
 
+	"zp/internals/loadebpf"
+	"zp/internals/process"
+
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +17,18 @@ var rootCmd = &cobra.Command{
 	Short: "port scanner cli",
 	Long:  `zp is a cli tool to scan open ports on the local machine using eBPF technology.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		spec, err := loadebpf.LoadEBPFProgram()
+		if err != nil {
+			println("Error loading eBPF program:", err.Error())
+			return
+		}
+		proc := process.NewIdentifyProcess(3000, spec)
+		for {
+			result := proc.Identify()
+			if result != nil {
+				println("Event data:", result)
+			}
+		}
 	},
 }
 
