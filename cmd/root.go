@@ -26,7 +26,7 @@ var rootCmd = &cobra.Command{
 		for {
 			result := proc.Identify()
 			if result != nil {
-				println("Event data:", result)
+				println("Event data:", result.Pid, result.Port)
 			}
 		}
 	},

@@ -2,10 +2,9 @@ package process
 
 import (
 	"log"
-	
+
 	"github.com/cilium/ebpf"
 )
-
 
 func ReadWithoutRemoveFromMap(m *ebpf.Map, key uint32) (*Process, error) {
 	var e Process

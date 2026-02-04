@@ -1,8 +1,6 @@
 package process
 
 import (
-	"bytes"
-	"encoding/binary"
 	"log"
 
 	"github.com/cilium/ebpf"
@@ -21,19 +19,19 @@ func NewIdentifyProcess(port int, spec *ebpf.Map) *IdentifyProcess {
 	}
 }
 
-func (ip *IdentifyProcess) Identify() []byte {
+func (ip *IdentifyProcess) Identify() *Process {
 	rd, err := ringbuf.NewReader(ip.spec)
 	if err != nil {
 		log.Println("Error creating ring buffer reader:", err)
 	}
-	record, err := rd.Read()
+	_, err = rd.Read()
 	if err != nil {
 		log.Println("Error reading from ring buffer:", err)
 	}
-	var event Process
-	err = binary.Read(bytes.NewBuffer(record.RawSample), binary.LittleEndian, &event)
+	event, err := ReadWithoutRemoveFromMap(ip.spec, uint32(ip.Port))
 	if err != nil {
 		log.Println("Error parsing event data:", err)
 	}
-	return record.RawSample
+	return event
 }
+                                                                                                                                                    
