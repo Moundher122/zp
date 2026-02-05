@@ -6,6 +6,7 @@ package cmd
 import (
 	"os"
 
+	"zp/internals/config"
 	"zp/internals/loadebpf"
 	"zp/internals/process"
 
@@ -23,6 +24,7 @@ var rootCmd = &cobra.Command{
 			return
 		}
 		proc := process.NewIdentifyProcess(3000, spec)
+		_ = config.NewDbConfig("./basgerdb")
 		for {
 			result := proc.Identify()
 			if result != nil {
