@@ -23,8 +23,8 @@ var rootCmd = &cobra.Command{
 			println("Error loading eBPF program:", err.Error())
 			return
 		}
-		proc := process.NewIdentifyProcess(3000, spec)
-		_ = config.NewDbConfig("./basgerdb")
+		db := config.NewDbConfig("./badgerdb")
+		proc := process.NewIdentifyProcess(3000, spec, db)
 		for {
 			result := proc.Identify()
 			if result != nil {
