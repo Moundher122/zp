@@ -91,6 +91,9 @@ Format code:
 ```bash
 go fmt ./...
 ```
+## Architecture
+
+For detailed architecture information, please refer to [Architecture.md](./Architecture.md).
 
 ## 📄 License
 
