@@ -1,19 +1,26 @@
 package process
 
 import (
-	"log"
+	"bytes"
+	"encoding/binary"
+	"errors"
 
-	"github.com/cilium/ebpf"
+	"github.com/cilium/ebpf/ringbuf"
 )
 
-func ReadWithoutRemoveFromMap(m *ebpf.Map, key uint32) (*Process, error) {
-	var e Process
-
-	// Lookup does NOT remove the entry
-	if err := m.Lookup(&key, &e); err != nil {
+func ReadFromRingBuf(rd *ringbuf.Reader) (*Process, error) {
+	record, err := rd.Read()
+	if err != nil {
+		// ring buffer closed or interrupted
+		if errors.Is(err, ringbuf.ErrClosed) {
+			return nil, err
+		}
 		return nil, err
 	}
-
-	log.Printf("PID=%d PORT=%d\n", e.Pid, e.Port)
-	return &e, nil
+	var p Process
+	reader := bytes.NewReader(record.RawSample)
+	if err := binary.Read(reader, binary.LittleEndian, &p); err != nil {
+		return nil, err
+	}
+	return &p, nil
 }

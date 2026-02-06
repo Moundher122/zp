@@ -18,6 +18,7 @@ func NewIdentifyProcess(port int, spec *ebpf.Map, db *badger.DB) *IdentifyProces
 	return &IdentifyProcess{
 		Port: port,
 		spec: spec,
+		db:   db,
 	}
 }
 
@@ -30,7 +31,7 @@ func (ip *IdentifyProcess) Identify() *Process {
 	if err != nil {
 		log.Println("Error reading from ring buffer:", err)
 	}
-	event, err := ReadWithoutRemoveFromMap(ip.spec, uint32(ip.Port))
+	event, err := ReadFromRingBuf(rd)
 	if err != nil {
 		log.Println("Error parsing event data:", err)
 	}

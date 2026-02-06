@@ -24,7 +24,7 @@ func AddToDb(db DB, key, value []byte) error {
 		return err
 	})
 }
-func GetFromDb(db DB, key []byte) ([]byte, error) {
+func GetFromDb(db DB, key []byte) (*[]byte, error) {
 	var value []byte
 	err := db.View(func(txn *badger.Txn) error {
 		item, err := txn.Get(key)
@@ -37,5 +37,5 @@ func GetFromDb(db DB, key []byte) ([]byte, error) {
 
 		})
 	})
-	return value, err
+	return &value, err
 }

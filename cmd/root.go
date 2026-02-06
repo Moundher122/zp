@@ -6,11 +6,11 @@ package cmd
 import (
 	"os"
 
+	"fmt"
 	"zp/internals/config"
 	"zp/internals/loadebpf"
 	"zp/internals/process"
 
-	"github.com/dgraph-io/badger/v4"
 	"github.com/spf13/cobra"
 )
 
@@ -25,12 +25,9 @@ var rootCmd = &cobra.Command{
 			return
 		}
 		db := config.NewDbConfig("./badgerdb")
-		db.Update(func(txn *badger.Txn) error {
-			err := txn.Set([]byte("key"), []byte("value"))
-			return err
-		})
-
-		proc := process.NewIdentifyProcess(3000, spec, db)
+		config.AddToDb(db, []byte("key"), []byte("value"))
+		fmt.Println(config.GetFromDb(db, []byte("key")))
+		proc := process.NewIdentifyProcess(3000, spec, db) 
 		for {
 			result := proc.Identify()
 			if result != nil {
