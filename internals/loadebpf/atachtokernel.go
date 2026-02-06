@@ -7,22 +7,17 @@ import (
 	"github.com/cilium/ebpf/link"
 )
 
-func AtachToKernel(linkpath,mappath string) (*ebpf.Map, error) {
+func AtachToKernel(linkpath, mappath string) (*ebpf.Map, error) {
 	spec, err := ebpf.LoadCollectionSpec("internals/eBPF/port.bpf.o")
 	if err != nil {
 		return nil, err
 	}
-
-	log.Println("=== programs ===")
 	for name := range spec.Programs {
 		log.Println(name)
 	}
-
-	log.Println("=== maps ===")
 	for name := range spec.Maps {
 		log.Println(name)
 	}
-
 	coll, err := ebpf.NewCollection(spec)
 	if err != nil {
 		return nil, err
@@ -41,7 +36,7 @@ func AtachToKernel(linkpath,mappath string) (*ebpf.Map, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err= Pin(coll.Maps["events"],mappath)
+	err = Pin(coll.Maps["events"], mappath)
 	log.Println("eBPF program attached successfully")
 	return coll.Maps["events"], nil
 }

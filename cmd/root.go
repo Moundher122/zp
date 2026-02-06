@@ -6,7 +6,6 @@ package cmd
 import (
 	"os"
 
-	"fmt"
 	"zp/internals/config"
 	"zp/internals/loadebpf"
 	"zp/internals/process"
@@ -25,12 +24,13 @@ var rootCmd = &cobra.Command{
 			return
 		}
 		db := config.NewDbConfig("./badgerdb")
-		config.AddToDb(db, []byte("key"), []byte("value"))
-		fmt.Println(config.GetFromDb(db, []byte("key")))
-		proc := process.NewIdentifyProcess(3000, spec, db) 
+		// hardcode value to test
+		proc := process.NewIdentifyProcess(3000, spec, db)
+		// this loop is for debuging only
 		for {
 			result := proc.Identify()
 			if result != nil {
+				config.PrintDbContents(db)
 				println("Event data:", result.Pid, result.Port)
 			}
 		}

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/dgraph-io/badger/v4"
 )
 
@@ -37,5 +39,28 @@ func GetFromDb(db DB, key []byte) (*[]byte, error) {
 
 		})
 	})
+	log.Printf("GetFromDb: key=%s, value=%s, err=%v", string(key), string(value), err)
 	return &value, err
+}
+func PrintDbContents(db DB) {
+	err := db.View(func(txn *badger.Txn) error {
+		opts := badger.DefaultIteratorOptions
+		opts.PrefetchValues = true
+		it := txn.NewIterator(opts)
+		defer it.Close()
+		log.Println("Current DB contents:")
+		for it.Rewind(); it.Valid(); it.Next() {
+			item := it.Item()
+			k := item.Key()
+			v, err := item.ValueCopy(nil)
+			if err != nil {
+				return err
+			}
+			log.Printf("Key: %s, Value: %s", string(k), string(v))
+		}
+		return nil
+	})
+	if err != nil {
+		log.Printf("Error printing DB contents: %v", err)
+	}
 }

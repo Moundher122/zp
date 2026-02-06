@@ -6,6 +6,7 @@ import (
 	"github.com/cilium/ebpf"
 	"github.com/cilium/ebpf/ringbuf"
 	"github.com/dgraph-io/badger/v4"
+	
 )
 
 type IdentifyProcess struct {
@@ -31,7 +32,7 @@ func (ip *IdentifyProcess) Identify() *Process {
 	if err != nil {
 		log.Println("Error reading from ring buffer:", err)
 	}
-	event, err := ReadFromRingBuf(rd)
+	event, err := ReadFromRingBuf(rd, ip.db)
 	if err != nil {
 		log.Println("Error parsing event data:", err)
 	}
