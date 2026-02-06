@@ -3,3 +3,4 @@ badgerdb/
 zp
 *.h
 *.o
+internals/eBPF/vmlinux.h
