@@ -8,3 +8,5 @@ port.bpf.o: port.bpf.c
 	$(CLANG) $(BPF_CFLAGS) -I$(LIBBPF_DIR) -c port.bpf.c -o port.bpf.o
 clean:
 	rm -f port.bpf.o 
+vmlinux.h:
+	bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
