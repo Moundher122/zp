@@ -12,12 +12,6 @@ func AtachToKernel(linkpath, mappath string) (*ebpf.Map, error) {
 	if err != nil {
 		return nil, err
 	}
-	for name := range spec.Programs {
-		log.Println(name)
-	}
-	for name := range spec.Maps {
-		log.Println(name)
-	}
 	coll, err := ebpf.NewCollection(spec)
 	if err != nil {
 		return nil, err
@@ -37,6 +31,5 @@ func AtachToKernel(linkpath, mappath string) (*ebpf.Map, error) {
 		log.Fatal(err)
 	}
 	err = Pin(coll.Maps["events"], mappath)
-	log.Println("eBPF program attached successfully")
 	return coll.Maps["events"], nil
 }

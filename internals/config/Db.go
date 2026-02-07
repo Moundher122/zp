@@ -47,7 +47,6 @@ func PrintDbContents(db DB) {
 		opts.PrefetchValues = true
 		it := txn.NewIterator(opts)
 		defer it.Close()
-		log.Println("Current DB contents:")
 		for it.Rewind(); it.Valid(); it.Next() {
 			item := it.Item()
 			k := item.Key()

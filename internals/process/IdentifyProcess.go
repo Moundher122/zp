@@ -9,19 +9,19 @@ import (
 )
 
 type IdentifyProcess struct {
-	spec *ebpf.Map
-	db   *badger.DB
+	RBMAP *ebpf.Map
+	db    *badger.DB
 }
 
-func NewIdentifyProcess(spec *ebpf.Map, db *badger.DB) *IdentifyProcess {
+func NewIdentifyProcess(RBMAP *ebpf.Map, db *badger.DB) *IdentifyProcess {
 	return &IdentifyProcess{
-		spec: spec,
-		db:   db,
+		RBMAP: RBMAP,
+		db:    db,
 	}
 }
 
 func (ip *IdentifyProcess) Identify() *Process {
-	rd, err := ringbuf.NewReader(ip.spec)
+	rd, err := ringbuf.NewReader(ip.RBMAP)
 	if err != nil {
 		log.Println("Error creating ring buffer reader:", err)
 	}

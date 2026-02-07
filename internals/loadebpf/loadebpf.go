@@ -14,12 +14,12 @@ var (
 
 func LoadEBPFProgram() (*ebpf.Map, error) {
 	if _, err := os.Stat(pinnedLinkPath); os.IsNotExist(err) {
-		coll, err := AtachToKernel(pinnedLinkPath, pinnedMapPath)
-		return coll, err
+		RBMAP, err := AtachToKernel(pinnedLinkPath, pinnedMapPath)
+		return RBMAP, err
 	}
-	coll, err := ebpf.LoadPinnedMap(pinnedMapPath, nil)
+	RBMAP, err := ebpf.LoadPinnedMap(pinnedMapPath, nil)
 	if err != nil {
 		log.Fatal("Failed to load pinned eBPF program:", err)
 	}
-	return coll, nil
+	return RBMAP, nil
 }
