@@ -6,18 +6,15 @@ import (
 	"github.com/cilium/ebpf"
 	"github.com/cilium/ebpf/ringbuf"
 	"github.com/dgraph-io/badger/v4"
-	
 )
 
 type IdentifyProcess struct {
-	Port int
 	spec *ebpf.Map
 	db   *badger.DB
 }
 
-func NewIdentifyProcess(port int, spec *ebpf.Map, db *badger.DB) *IdentifyProcess {
+func NewIdentifyProcess(spec *ebpf.Map, db *badger.DB) *IdentifyProcess {
 	return &IdentifyProcess{
-		Port: port,
 		spec: spec,
 		db:   db,
 	}

@@ -39,7 +39,6 @@ func GetFromDb(db DB, key []byte) (*[]byte, error) {
 
 		})
 	})
-	log.Printf("GetFromDb: key=%s, value=%s, err=%v", string(key), string(value), err)
 	return &value, err
 }
 func PrintDbContents(db DB) {

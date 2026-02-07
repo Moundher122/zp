@@ -24,15 +24,13 @@ var rootCmd = &cobra.Command{
 			return
 		}
 		db := config.NewDbConfig("./badgerdb")
-		// hardcode value to test
-		proc := process.NewIdentifyProcess(3000, spec, db)
-		// this loop is for debuging only
-		for {
-			result := proc.Identify()
-			if result != nil {
-				config.PrintDbContents(db)
-				println("Event data:", result.Pid, result.Port)
-			}
+		proc := process.NewIdentifyProcess(spec, db)
+		_ = proc.Identify()
+		value, err := config.GetFromDb(db, []byte("3030"))
+		if err != nil {
+			println("Error getting value from db:", err.Error())
+		} else {
+			println("Value from db:", string(*value))
 		}
 	},
 }
