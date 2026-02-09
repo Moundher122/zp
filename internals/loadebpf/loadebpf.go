@@ -7,14 +7,9 @@ import (
 	"github.com/cilium/ebpf"
 )
 
-var (
-	pinnedLinkPath = "/sys/fs/bpf/port_link"
-	pinnedMapPath  = "/sys/fs/bpf/port_map"
-)
-
-func LoadEBPFProgram() (*ebpf.Map, error) {
+func LoadEBPFProgram(pinnedLinkPath, pinnedMapPath string) (*ebpf.Map, error) {
 	if _, err := os.Stat(pinnedLinkPath); os.IsNotExist(err) {
-		RBMAP, err := AtachToKernel(pinnedLinkPath, pinnedMapPath)
+		RBMAP, err := AtachToKernel(pinnedLinkPath, pinnedMapPath, "internals/eBPF/bind/port.bind.bpf.o")
 		return RBMAP, err
 	}
 	RBMAP, err := ebpf.LoadPinnedMap(pinnedMapPath, nil)

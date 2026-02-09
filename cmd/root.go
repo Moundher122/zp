@@ -13,12 +13,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	pinnedLinkPath = "/sys/fs/bpf/port_link"
+	pinnedMapPath  = "/sys/fs/bpf/port_map"
+)
 var rootCmd = &cobra.Command{
 	Use:   "zp",
 	Short: "port scanner cli",
 	Long:  `zp is a cli tool to scan open ports on the local machine using eBPF technology.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		spec, err := loadebpf.LoadEBPFProgram()
+		spec, err := loadebpf.LoadEBPFProgram(pinnedLinkPath, pinnedMapPath)
 		if err != nil {
 			println("Error loading eBPF program:", err.Error())
 			return

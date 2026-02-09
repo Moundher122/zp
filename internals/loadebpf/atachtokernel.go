@@ -7,8 +7,8 @@ import (
 	"github.com/cilium/ebpf/link"
 )
 
-func AtachToKernel(linkpath, mappath string) (*ebpf.Map, error) {
-	spec, err := ebpf.LoadCollectionSpec("internals/eBPF/port.bpf.o")
+func AtachToKernel(linkpath, mappath, ebpfpath string) (*ebpf.Map, error) {
+	spec, err := ebpf.LoadCollectionSpec(ebpfpath)
 	if err != nil {
 		return nil, err
 	}
