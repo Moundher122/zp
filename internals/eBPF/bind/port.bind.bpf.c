@@ -1,11 +1,11 @@
-#include "vmlinux.h"
+#include "../vmlinux.h"
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
 #include <bpf/bpf_endian.h>
 
 #define AF_INET 2
 
-struct event {
+struct OpenPortEvent {
     __u32 pid;
     __u16 port;
 };
@@ -20,7 +20,7 @@ int handle_bind(struct trace_event_raw_sys_enter *ctx)
 {
     struct sockaddr sa = {};
     struct sockaddr_in *sin;
-    struct event *e;
+    struct OpenPortEvent *e;
     __u32 pid;
 
     pid = bpf_get_current_pid_tgid() >> 32;
