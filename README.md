@@ -1,7 +1,14 @@
-# zp
+<p align="center">
+  <img src="assets/zp.png" alt="zp logo" width="200"/>
+</p>
 
-`zp` is a lightweight CLI tool written in Go to monitor open ports on your system and inspect the processes using them.
+<h1 align="center">zp</h1>
 
+<p align="center">
+  Lightweight, fast CLI tool written in Go to monitor open ports and inspect the processes using them.
+</p>
+
+---
 ## ✨ Features
 
 - Built with Go
