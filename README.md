@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/zp.png" alt="zp logo" width="200"/>
+  <img src="assets/logo.png" alt="zp logo" width="200"/>
 </p>
 
 <h1 align="center">zp</h1>
